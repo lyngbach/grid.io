@@ -33,9 +33,11 @@ App.Config.setup = function () {
 	this.hash = window.location.hash;
 
 	this.version = '1.0.0';
-
+		
 	if (this.hash === '') {
 		this.path('menu');
+	} else if (this.hash.length === 7) {
+		this.path('controller?room=' + this.hash.substr(2));
 	} else {
 		this.onRouteChange();
 	}
@@ -63,6 +65,8 @@ App.Config.path = function (location) {
 App.Config.onRouteChange = function () {
 	this.location = window.location.hash.substr(2);
 
+	console.log('onRouteChange');
+
 	// skip rendering check if same page and only parameters have changed
 	if (this.oldLocation) {
 		if (this.oldLocation.indexOf('?') > -1) {
@@ -80,6 +84,7 @@ App.Config.onRouteChange = function () {
 			App.Render.initialize(this.location);
 		}
 	} else {
+		console.log('her?', this.location);
 		App.Render.initialize(this.location);
 	}
 
@@ -152,6 +157,8 @@ App.Render.initialize = function (location) {
 		this.location = location.toLowerCase();
 	}
 
+	console.log('opening ', this.location);
+
 	this.request = new XMLHttpRequest();
 	this.request.onload = this.parseTemplate.bind(this);
 	this.request.open('GET', 'views/' + this.location + '.html', true);
@@ -184,11 +191,17 @@ App.Render.showTemplate = function () {
 App.Controller.initialize = function () {
 	this.parameters = App.Config.getParameters();
 
-	console.log('controller init');	
+	if (this.parameters.room) {
+		this.joinGame(this.parameters.room);
+	}
 };
 
-App.Controller.doSomething = function (event) {
-	//special function for doSomething
+App.Controller.joinGame = function (room) {
+	socket.emit('joinGame', {room: room}, this.setUser.bind(this));
+};
+
+App.Controller.setUser = function (response) {
+
 };
 
 App.Controller.getUrlVars = function () {
@@ -242,13 +255,15 @@ App.Game.doSomething = function (event) {
 };
 
 App.Game.getGame = function () {
-	console.log('get game info');
+	console.log('get game info with room:', this.parameters.room);
 	
 	socket.emit('getGame', {room: this.parameters.room}, this.setGame.bind(this));
 };
 
 App.Game.setGame = function (response) {
-	this.data = response;
+	this.data = response.game;
+
+	console.log('setGame', response);
 
 	this.renderGrid();
 
@@ -272,10 +287,8 @@ App.Menu.setupGame = function (event) {
 };
 
 App.Menu.setTheGame = function (response) {
-	if (response.id && response.grid.length > 0) {
-		App.Game.data = response;
-
-		console.log('App.Game.data', App.Game.data);
+	if (response.game.room && response.game.grid.length > 0) {
+		App.Game.data = response.game;
 
 		App.Config.path('game?room=' + App.Game.data.room);
 	} else {
