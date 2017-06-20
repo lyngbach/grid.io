@@ -1,0 +1,4 @@
+/node_modules/
+ftpsync.settings
+sftp-config.json
+npm-debug.log
