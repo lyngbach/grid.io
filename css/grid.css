@@ -219,19 +219,19 @@ article {
 	color: #228fe7;
 }
 
-.controller .arrow:nth-child(1) {
+.controller .arrowUp {
 	top: 0;
 	left: 48px;
 }
-.controller .arrow:nth-child(2) {
+.controller .arrowRight {
 	top: 48px;
 	right: 0;
 }
-.controller .arrow:nth-child(3) {
+.controller .arrowDown {
 	bottom: 0;
 	left: 48px;
 }
-.controller .arrow:nth-child(4) {
+.controller .arrowLeft {
 	top: 48px;
 	left: 0;
 }
@@ -253,7 +253,6 @@ article {
 .controller .action2 {
 	
 }
-
 
 
 /*

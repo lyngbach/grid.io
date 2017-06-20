@@ -191,6 +191,13 @@ App.Render.showTemplate = function () {
 App.Controller.initialize = function () {
 	this.parameters = App.Config.getParameters();
 
+	this.goUp = document.getElementById('goUp');
+	this.goDown = document.getElementById('goDown');
+	this.goLeft = document.getElementById('goLeft');
+	this.goRight = document.getElementById('goRight');
+
+	console.log('controller init');	
+
 	if (this.parameters.room) {
 		this.joinGame(this.parameters.room);
 	}
