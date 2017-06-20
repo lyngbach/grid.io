@@ -109,15 +109,14 @@ global.server = {
 
 	// On socket connection
 	connection: function (socket) {
-		socket.joinedRooms = {};
-
-		//console.log('a user connected', socket.id);
-
 		// socket listeners
 		socket.on('joinRoom', this.joinRoom.bind(this, socket));
 		socket.on('leaveRoom', this.leaveRoom.bind(this, socket));
 		socket.on('disconnect', this.disconnect.bind(this, socket));
 		socket.on('broadcast', this.broadcast.bind(this, socket));
+
+		socket.on('setGame', this.setGame.bind(this, socket));
+		socket.on('getGame', this.getGame.bind(this, socket));
 	},
 
 	// Join a socket room
@@ -136,11 +135,6 @@ global.server = {
 		
 	},
 
-	// Handle error event
-	error: function (message, error) {
-		console.error(message, error);
-	},
-
 	// Broadcast to a socket room
 	// Data properties required: room (optional: backToSender)
 	broadcast: function (socket, data, backToSender) {
@@ -150,6 +144,88 @@ global.server = {
 		} else {
 			// To specific room without sender
 			socket.broadcast.to(data.room).emit('broadcastUpdateProject', data);
+		}
+	},
+
+	setGame: function (socket, data, callback) {
+		var gameId = new Date().getTime(),
+			game,
+			gridSize = 20;
+		
+		if (game) {
+			console.log('exist allready');
+		} else {
+			//console.log('game doesnt exist create it');
+			game = {
+				id: gameId,
+				room: this.getRoom(),
+				players: [],
+				grid: []
+			};
+
+			for (var x = 0; x < gridSize; x++) {
+				game.grid[x] = [];
+
+				for (var y = 0; y < gridSize; y++) {
+					game.grid[x].push({x: x, y: y});
+				}
+			}
+
+			this.games['game' + gameId] = game;
+
+			if (callback) {
+				callback(game);
+			}
+			
+		}
+
+	},
+	getRoom: function (counter) {
+		var room = this.getRoomName()
+		
+		// TODO: Expand to being able to check infinite
+		if (this.checkRoomName(room) === true) {
+			return room;
+		} else {
+			return this.getRoomName();
+		}
+	},
+	getRoomName: function () {
+		return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5).toUpperCase();
+	},
+	checkRoomName: function (room) {
+		var exist = false;
+
+		for (var name in this.games) {
+			if (this.games[name].room === room) {
+				exist = true;
+			}
+		}
+
+		// make sure room name doesnt exist allready
+		if (exist === true) {
+			return false;
+		} else {
+			return true;
+		}
+	},
+	getGame: function (socket, data, callback) {
+		for (var name in this.games) {
+			if (this.games[name].room === data.room) {
+				data.gameFound = true;
+
+				if (callback) {
+					callback(this.games[name]);
+				}
+
+				break;
+			}
+		}
+
+		data.gameFound = false;
+
+		if (callback) {
+			callback(this.games[name]);
 		}
 	}
 };
