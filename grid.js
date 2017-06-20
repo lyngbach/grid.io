@@ -80,6 +80,7 @@ global.server = {
 		}
 		*/
 	},
+	colors: [],
 
 	// Initlize the node application
 	initialize: function () {
@@ -117,6 +118,7 @@ global.server = {
 
 		socket.on('setGame', this.setGame.bind(this, socket));
 		socket.on('getGame', this.getGame.bind(this, socket));
+		socket.on('joinGame', this.joinGame.bind(this, socket));
 	},
 
 	// Join a socket room
@@ -148,37 +150,29 @@ global.server = {
 	},
 
 	setGame: function (socket, data, callback) {
-		var gameId = new Date().getTime(),
-			game,
-			gridSize = 20;
+		var gridSize = 20;
 		
-		if (game) {
-			console.log('exist allready');
-		} else {
-			//console.log('game doesnt exist create it');
-			game = {
-				id: gameId,
-				room: this.getRoom(),
-				players: [],
-				grid: []
-			};
+		//console.log('game doesnt exist create it');
+		data.game = {
+			id: new Date().getTime(),
+			room: this.getRoom(),
+			players: [],
+			grid: []
+		};
 
-			for (var x = 0; x < gridSize; x++) {
-				game.grid[x] = [];
+		for (var x = 0; x < gridSize; x++) {
+			data.game.grid[x] = [];
 
-				for (var y = 0; y < gridSize; y++) {
-					game.grid[x].push({x: x, y: y});
-				}
+			for (var y = 0; y < gridSize; y++) {
+				data.game.grid[x].push({x: x, y: y});
 			}
-
-			this.games['game' + gameId] = game;
-
-			if (callback) {
-				callback(game);
-			}
-			
 		}
 
+		this.games['game_' + data.game.room] = data.game;
+
+		if (callback) {
+			callback(data);
+		}
 	},
 	getRoom: function (counter) {
 		var room = this.getRoomName()
@@ -191,42 +185,35 @@ global.server = {
 		}
 	},
 	getRoomName: function () {
-		return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5).toUpperCase();
+		return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5).toLowerCase();
 	},
 	checkRoomName: function (room) {
-		var exist = false;
-
-		for (var name in this.games) {
-			if (this.games[name].room === room) {
-				exist = true;
-			}
-		}
-
-		// make sure room name doesnt exist allready
-		if (exist === true) {
+		if (this.games['game_' + room]) {
 			return false;
 		} else {
 			return true;
 		}
 	},
 	getGame: function (socket, data, callback) {
-		for (var name in this.games) {
-			if (this.games[name].room === data.room) {
-				data.gameFound = true;
-
-				if (callback) {
-					callback(this.games[name]);
-				}
-
-				break;
-			}
+		if (this.games['game_' + data.room]) {
+			data.gameFound = true;
+			data.game = this.games['game_' + data.room];
+		} else {
+			data.gameFound = false;
+			data.game = this.games['game_' + data.room];
 		}
-
-		data.gameFound = false;
 
 		if (callback) {
-			callback(this.games[name]);
-		}
+			callback(data);	
+		}		
+	},
+	joinGame: function (socket, data, callback) {
+		var user = {
+			name: this.games['game_' + data.room]
+		};
+		console.log('joining the game', data);
+
+
 	}
 };
 
