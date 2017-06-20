@@ -176,7 +176,38 @@ article {
 └───────────────────────────────────────────────────┘
 */
 
+#controlsContainer {
+	width: 300px;
+	height: 300px;
+	position: relative;
+}
 
+#controlsContainer button {
+	width: 33.333%;
+	height: 33.333%;
+	display: block;
+	position: absolute;
+}
+
+#goUp {
+	left: 33.333%;
+	top: 0%;
+}
+
+#goDown {
+	left: 33.333%;
+	bottom: 0%;
+}
+
+#goLeft {
+	left: 0%;
+	top: 33.333%;
+}
+
+#goRight {
+	right: 0%;
+	top:33.33333%;
+}
 
 
 /*
