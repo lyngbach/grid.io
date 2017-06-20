@@ -26,7 +26,8 @@ html, body {
 	-webkit-touch-callout: none;
 	-webkit-text-size-adjust: none;
 	-webkit-user-select: none;
-	background-color: #EEE;
+	background-color: #303030;
+	color: #228fe7;
 	font-family: 'Roboto', 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	position: relative;
@@ -34,6 +35,7 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 	box-sizing: border-box;
+	margin: 0;
 }
 
 
@@ -125,7 +127,7 @@ article {
 	/*padding: 64px 8px 8px 8px;*/
 	width: 100%;
 	left: 0;
-	top: 56px;
+	top: 0;
 	bottom: 0;
 	padding-top: 8px;
 	padding-left: 8px;
@@ -168,7 +170,17 @@ article {
 			transition: 0.3s ease;
 }
 
+.color1 { color: #228fe7; }
+.bgColor1 { background-color: #228fe7; }
 
+.color2 { color: #ec5f19; }
+.bgColor2 { background-color: #ec5f19; }
+
+.color3 { color: #21ef45; }
+.bgColor3 { background-color: #21ef45; }
+
+.color4 { color: #d121ef; }
+.bgColor4 { background-color: #d121ef; }
 
 /*
 ┌───────────────────────────────────────────────────┐
@@ -176,6 +188,71 @@ article {
 └───────────────────────────────────────────────────┘
 */
 
+.controller {
+
+}
+
+
+.controller .arrows {
+	float: left;
+	position: absolute;
+	width: 144px;
+	height: 144px;
+	top: 50%;
+	left: 10%;
+	transform: translateY(-50%);
+	border: 1px solid #FFF;
+	box-sizing: border-box;
+}
+
+.controller .arrow {
+	position: absolute;
+	padding: 8px;
+	width: 48px;
+	height: 48px;
+	border: 1px solid #228fe7;
+	background: none;
+	border-radius: 50%;
+}
+
+.controller .arrow i {
+	color: #228fe7;
+}
+
+.controller .arrow:nth-child(1) {
+	top: 0;
+	left: 48px;
+}
+.controller .arrow:nth-child(2) {
+	top: 48px;
+	right: 0;
+}
+.controller .arrow:nth-child(3) {
+	bottom: 0;
+	left: 48px;
+}
+.controller .arrow:nth-child(4) {
+	top: 48px;
+	left: 0;
+}
+
+.controller .actions {
+	position: absolute;
+	width: 144px;
+	height: 144px;
+	top: 50%;
+	right: 10%;
+	transform: translateY(-50%);
+	border: 1px solid #FFF;
+}
+
+.controller .action1 {
+	
+}
+
+.controller .action2 {
+	
+}
 
 
 
@@ -185,6 +262,19 @@ article {
 └───────────────────────────────────────────────────┘
 */
 
+.game {
+	text-align: center;
+}
+
+
+#gridContainer {
+	display: inline-block;
+	background-color: 424242;
+	box-shadow: 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
+	box-sizing: border-box;
+	border-bottom: 1px solid rgba(255,255,255,0.30);
+	border-right: 1px solid rgba(255,255,255,0.30);
+}
 
 .gridRow {
 	float: left;
@@ -200,7 +290,7 @@ article {
 	width: 20px;
 	height: 20px;
 	float: left;
-	background-color: rgba(0,0,0,0.12);
+	/*background-color: rgba(0,0,0,0.12);*/
 	border-left: 1px solid rgba(255,255,255,0.30);
 }
 
