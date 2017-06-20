@@ -186,6 +186,28 @@ article {
 */
 
 
+.gridRow {
+	float: left;
+	clear: both;
+	border-top: 1px solid rgba(255,255,255,0.30);
+}
+
+.gridRow::last-child {
+	border-bottom: 1px solid rgba(255,255,255,0.30);
+}
+
+.gridCell {
+	width: 12px;
+	height: 12px;
+	float: left;
+	background-color: rgba(0,0,0,0.12);
+	border-left: 1px solid rgba(255,255,255,0.30);
+}
+
+.gridCell::last-child {
+	border-right: 1px solid rgba(255,255,255,0.30);
+}
+
 
 
 /*

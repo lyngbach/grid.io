@@ -191,6 +191,14 @@ App.Controller.doSomething = function (event) {
 	//special function for doSomething
 };
 
+App.Controller.getUrlVars = function () {
+	var vars = {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		vars[key] = value;
+	});
+	return vars;
+}
+
 
 
 // Game
@@ -201,11 +209,31 @@ App.Game.initialize = function () {
 
 	if (this.parameters.room && !this.data) {
 		this.getGame();
+	} else {
+		this.renderGrid();
 	}
 };
 
-App.Game.doSomething = function (event) {
-	//special function for doSomething
+App.Game.renderGrid = function () {
+	this.gridContainer = document.getElementById('gridContainer');
+	this.gridContainer.innerHTML = '';
+	console.log(this.gridContainer);
+
+
+	for (var i = this.data.grid.length-1; i >= 0; i--) {
+		this.row = document.createElement('div');
+		this.row.setAttribute('id', 'y'+i);
+		this.row.classList.add('gridRow');
+		for (var j = 0; j < this.data.grid[i].length; j++) {
+			this.cell = document.createElement('div');
+			this.cell.setAttribute('id', 'x' + j + 'y' + i);
+			this.cell.classList.add('gridCell');
+
+			this.row.appendChild(this.cell);
+		}
+
+		this.gridContainer.appendChild(this.row);
+	}
 };
 
 
@@ -221,6 +249,8 @@ App.Game.getGame = function () {
 
 App.Game.setGame = function (response) {
 	this.data = response;
+
+	this.renderGrid();
 
 	console.log('setGame', this.data);
 };
