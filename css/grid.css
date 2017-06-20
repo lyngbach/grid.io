@@ -38,6 +38,25 @@ html, body {
 	margin: 0;
 }
 
+h1 {
+	color: #228fe7;
+	font-size: 32px;
+	font-weight: 400;
+	margin-bottom: 0;
+}
+
+h2 {
+	font-weight: 400;
+}
+
+h3 {
+	font-weight: 400;
+	margin-left: 5%;
+}
+
+button:focus {
+	outline: none;
+}
 
 .overlay {
 	position: absolute;
@@ -196,8 +215,8 @@ article {
 .controller .arrows {
 	float: left;
 	position: absolute;
-	width: 144px;
-	height: 144px;
+	width: 168px;
+	height: 168px;
 	top: 50%;
 	left: 10%;
 	transform: translateY(-50%);
@@ -205,14 +224,15 @@ article {
 	box-sizing: border-box;
 }
 
-.controller .arrow {
+.controller .arrow, .controller .action {
 	position: absolute;
 	padding: 8px;
-	width: 48px;
-	height: 48px;
+	width: 56px;
+	height: 56px;
 	border: 1px solid #228fe7;
 	background: none;
 	border-radius: 50%;
+	color: #228fe7;
 }
 
 .controller .arrow i {
@@ -221,25 +241,25 @@ article {
 
 .controller .arrowUp {
 	top: 0;
-	left: 48px;
+	left: 56px;
 }
 .controller .arrowRight {
-	top: 48px;
+	top: 56px;
 	right: 0;
 }
 .controller .arrowDown {
 	bottom: 0;
-	left: 48px;
+	left: 56px;
 }
 .controller .arrowLeft {
-	top: 48px;
+	top: 56px;
 	left: 0;
 }
 
 .controller .actions {
 	position: absolute;
-	width: 144px;
-	height: 144px;
+	width: 168px;
+	height: 168px;
 	top: 50%;
 	right: 10%;
 	transform: translateY(-50%);
@@ -247,11 +267,13 @@ article {
 }
 
 .controller .action1 {
-	
+	bottom: 24px;
+	left: 16px;
 }
 
 .controller .action2 {
-	
+	top: 24px;
+	right: 16px;
 }
 
 
@@ -266,7 +288,7 @@ article {
 }
 
 
-#gridContainer {
+.game .gridContainer {
 	display: inline-block;
 	background-color: 424242;
 	box-shadow: 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
@@ -275,17 +297,17 @@ article {
 	border-right: 1px solid rgba(255,255,255,0.30);
 }
 
-.gridRow {
+.game .gridRow {
 	float: left;
 	clear: both;
 	border-top: 1px solid rgba(255,255,255,0.30);
 }
 
-.gridRow::last-child {
+.game .gridRow::last-child {
 	border-bottom: 1px solid rgba(255,255,255,0.30);
 }
 
-.gridCell {
+.game .gridCell {
 	width: 20px;
 	height: 20px;
 	float: left;
@@ -293,8 +315,12 @@ article {
 	border-left: 1px solid rgba(255,255,255,0.30);
 }
 
-.gridCell::last-child {
+.game .gridCell::last-child {
 	border-right: 1px solid rgba(255,255,255,0.30);
+}
+
+.game .gameRoom {
+	text-transform: uppercase;
 }
 
 
@@ -304,3 +330,47 @@ article {
 │	• Menu											│
 └───────────────────────────────────────────────────┘
 */
+
+.menu {
+	text-align: center
+}
+
+.menuStart, .menuJoin {
+	visibility: hidden;
+	opacity: 0;
+	transform: translateY(100%);
+}
+
+.menuStart.show, .menuJoin.show {
+	visibility: visible;
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.colorCarousel {
+	animation: carousel 4s infinite;
+}
+
+@keyframes carousel {
+	0%   { color: #228fe7; }
+	25%  { color: #ec5f19; }
+	50%  { color: #21ef45; }
+	75%  { color: #d121ef; }
+	100% { color: #228fe7; }
+}
+
+.menuBtn {
+	border: 1px solid #228fe7;
+	padding: 8px 16px 8px 16px;
+	background: none;
+	color: #228fe7;
+	font-size: 20px;
+	text-transform: uppercase;
+	display: block;
+	margin: auto;
+	min-width: 200px;
+	margin-bottom: 24px;
+	margin-top: 24px;
+	cursor: pointer;
+}
+

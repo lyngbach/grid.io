@@ -234,6 +234,22 @@ App.Game.initialize = function () {
 	}
 };
 
+App.Game.getGame = function () {
+	console.log('get game info with room:', this.parameters.room);
+	
+	socket.emit('getGame', {room: this.parameters.room}, this.setGame.bind(this));
+};
+
+App.Game.setGame = function (response) {
+	this.data = response.game;
+
+	console.log('setGame', response);
+
+	this.renderGrid();
+
+	console.log('setGame', this.data);
+};
+
 App.Game.renderGrid = function () {
 	this.gridContainer = document.getElementById('gridContainer');
 	this.gridContainer.innerHTML = '';
@@ -254,27 +270,14 @@ App.Game.renderGrid = function () {
 
 		this.gridContainer.appendChild(this.row);
 	}
+
+	this.initGame();
 };
 
+App.Game.initGame = function (event) {
+	this.gameRoom = document.getElementById('gameRoom');
 
-App.Game.doSomething = function (event) {
-	//special function for doSomething
-};
-
-App.Game.getGame = function () {
-	console.log('get game info with room:', this.parameters.room);
-	
-	socket.emit('getGame', {room: this.parameters.room}, this.setGame.bind(this));
-};
-
-App.Game.setGame = function (response) {
-	this.data = response.game;
-
-	console.log('setGame', response);
-
-	this.renderGrid();
-
-	console.log('setGame', this.data);
+	this.gameRoom.innerHTML = this.data.room;
 };
 
 
@@ -287,6 +290,31 @@ App.Menu.initialize = function () {
 	this.joinGame = document.getElementById('joinGame');
 
 	this.startGame.addEventListener('click', this.setupGame.bind(this), false);
+	this.joinGame.addEventListener('click', this.insertCode.bind(this), false);
+
+	if (this.parameters.section) {
+		this.showSection(this.parameters.section);
+	} else {
+		this.showSection('menuStart');
+	}
+	
+};
+
+App.Menu.showSection = function (section) {	
+	var sections = document.getElementById('menu').getElementsByTagName('section');
+
+	for (var s = 0; s < sections.length; s++) {
+		
+		if (sections[s].id === section) {
+			sections[s].classList.add('show');
+		} else {
+			sections[s].classList.remove('show');
+		}
+	}
+};
+
+App.Menu.insertCode = function () {
+	App.Config.path('menu?section=menuJoin');
 };
 
 App.Menu.setupGame = function (event) {	
